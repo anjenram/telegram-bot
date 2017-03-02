@@ -1,8 +1,7 @@
 var TelegramBot = require('node-telegram-bot-api');
 var token = '331299898:AAFdMVnEqW2t4b5MqU0J861HRWj061WgbIU';
 var bot = new TelegramBot(token, {polling: true});
-var http = require("http");
-var https = require("https");
+
 
 
 bot.on('message', function (msg) {
@@ -27,3 +26,5 @@ bot.on('message', function (msg) {
     bot.sendMessage(chatId, "Прошло 15 минут, напиши мне что-то", {caption: "I'm a bot!"});
   }, 900000);
 });
+
+
