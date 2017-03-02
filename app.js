@@ -22,4 +22,8 @@ bot.on('message', function (msg) {
       return bot.sendMessage(chatId, "Hello! I am NodeJS bot! Soon I'll be ready", {caption: "I'm a bot!"});
       break;
   }
+  setInterval(function() {
+    bot.sendMessage(chatId, "Has passed 15 minutes to write me something", {caption: "I'm a bot!"});
+    bot.sendMessage(chatId, "Прошло 15 минут, напиши мне что-то", {caption: "I'm a bot!"});
+  }, 900000);
 });
