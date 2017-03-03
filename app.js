@@ -2,7 +2,7 @@ var TelegramBot = require('node-telegram-bot-api');
 var token = '331299898:AAFdMVnEqW2t4b5MqU0J861HRWj061WgbIU';
 var bot = new TelegramBot(token, {polling: true});
 
-
+var notes = [];
 
 bot.on('message', function (msg) {
   var chatId = msg.chat.id;
@@ -21,10 +21,23 @@ bot.on('message', function (msg) {
       return bot.sendMessage(chatId, "Hello! I am NodeJS bot! Soon I'll be ready", {caption: "I'm a bot!"});
       break;
   }
-  setInterval(function() {
-    bot.sendMessage(chatId, "Has passed 15 minutes to write me something", {caption: "I'm a bot!"});
-    bot.sendMessage(chatId, "Прошло 15 минут, напиши мне что-то", {caption: "I'm a bot!"});
-  }, 900000);
 });
+bot.onText(/\/напомни (.+) в (.+)/, function (msg, match) {
+  var userId = msg.from.id;
+  var text = match[1];
+  var time = match[2];
 
+  notes.push( { 'uid':userId, 'time':time, 'text':text } );
+
+  bot.sendMessage(userId, 'Отлично! Я обязательно напомню, если буду жив :)');
+});
+setInterval(function(){
+  for (var i = 0; i < notes.length; i++){
+    var curDate = new Date().getHours() + ':' + new Date().getMinutes();
+    if ( notes[i]['time'] == curDate ) {
+      bot.sendMessage(notes[i]['uid'], 'Напоминаю, что вы должны: '+ notes[i]['text'] + ' сейчас.');
+      notes.splice(i,1);
+    }
+  }
+},1000);
 
