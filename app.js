@@ -6,7 +6,7 @@ bot.setMainMenuText(function (chat) { return "What do you want to do?"; });
 
 bot.setMainMenuOptions(function (chat) {
   return { "Hi": hiOption, "Bye": byeOption };
-};
+});
 
 bot.onCommand("start", false, function (msg) { bot.sendMainMenu(msg.chat); })
 
