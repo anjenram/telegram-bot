@@ -33,11 +33,11 @@ bot.on('message', function (msg) {
     })
     var keysShips = [];
     for (var i = 0; i < starships.length; i++) {
-        console.log(starships[i].name)
+
         var tmp = starships[i].class_starship + " " + starships[i].name + " " + starships[i].model;
         keysShips[i] = [tmp]
     }
-    console.log(keysShips)
+
     var optionShips = {
         "parse_mode": "Markdown",
         "reply_markup": {
@@ -46,7 +46,13 @@ bot.on('message', function (msg) {
         }
     }
     bot.sendMessage(chatId, "Greetings! Choose yourself a star ship", optionShips);
-
+    console.log(msg)
+    if (msg.text != '/start'){
+        bot.sendMessage(chatId, "Congratulations! "+ msg.text + " Excellent choice", {});
+    }
+    if(msg.sticker){
+        bot.sendMessage(chatId, "You really think your sticker is very funny?!", {});
+    }
 
 });
 
