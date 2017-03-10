@@ -9,7 +9,15 @@ var request = require('request');
 // }
 
 var starships = []
+request('https://noderestapi.herokuapp.com/api/starships/', function (err, res, body) {
 
+    return starships = JSON.parse(body)
+})
+var infoClass = []
+request('https://noderestapi.herokuapp.com/api/starships/class', function (err, res, body) {
+
+    return infoClass = JSON.parse(body)
+})
 // function GetStarships() {
 //
 //     request('https://noderestapi.herokuapp.com/api/starships/', function (err, res, body) {
@@ -26,11 +34,59 @@ var starships = []
 //         bot.sendMessage(chatId, starships[i].name, {});
 //     }
 // }
-bot.on('message', function (msg) {
-    var chatId = msg.chat.id;
-    request('https://noderestapi.herokuapp.com/api/starships/', function (err, res, body) {
-        return starships = JSON.parse(body)
-    })
+// bot.on('message', function (msg) {
+//     var state = {
+//         on: false
+//     }
+//     var chatId = msg.chat.id;
+//     request('https://noderestapi.herokuapp.com/api/starships/', function (err, res, body) {
+//
+//         return starships = JSON.parse(body)
+//     })
+//     var keysShips = [];
+//     for (var i = 0; i < starships.length; i++) {
+//
+//         var tmp = starships[i].class_starship + " " + starships[i].name + " " + starships[i].model;
+//         keysShips[i] = [tmp]
+//         state.on = true
+//     }
+//
+//     var optionShips = {
+//         "parse_mode": "Markdown",
+//         "reply_markup": {
+//             "keyboard": keysShips
+//
+//         }
+//     }
+//     if(state.on) {
+//         bot.sendMessage(chatId, "Greetings! Choose yourself a star ship", optionShips);
+//         state.on = false
+//     }
+//     console.log(msg)
+//     if (msg.text != '/start'){
+//         bot.sendMessage(chatId, "Congratulations! "+ msg.text + " Excellent choice", {});
+//     }
+//     if(msg.sticker){
+//         bot.sendMessage(chatId, "You really think your sticker is very funny?!", {});
+//     }
+//
+// });
+bot.onText(/\/start/, function (msg, match) {
+    var fromId = msg.from.id;
+    bot.sendMessage(fromId, "Welcome! For the beginning we recommend using the /help team for getting help,"+ '\n' + "after acquaintance you can use the command /getship to get starship", {
+        "parse_mode": "Markdown",
+        "reply_markup": {
+            "keyboard": [
+                ["/getship"],
+                ["/help"]
+            ]
+
+        }
+    });
+})
+bot.onText(/\/getship/, function (msg, match) {
+    console.log(msg, match)
+    var fromId = msg.from.id;
     var keysShips = [];
     for (var i = 0; i < starships.length; i++) {
 
@@ -45,15 +101,17 @@ bot.on('message', function (msg) {
 
         }
     }
-    bot.sendMessage(chatId, "Greetings! Choose yourself a star ship", optionShips);
-    console.log(msg)
-    if (msg.text != '/start'){
-        bot.sendMessage(chatId, "Congratulations! "+ msg.text + " Excellent choice", {});
-    }
-    if(msg.sticker){
-        bot.sendMessage(chatId, "You really think your sticker is very funny?!", {});
-    }
 
+    bot.sendMessage(fromId, "Greetings! Choose yourself a star ship", optionShips);
+});
+bot.onText(/\/help/, function (msg, match) {
+    var fromId = msg.from.id;
+    console.log(msg, match)
+    for (var i = 0; i < infoClass.length; i++) {
+        var tmpName = "Name: " + " " + infoClass[i].name + '\n';
+        var tmpDesc = "Description: " + " " + infoClass[i].description;
+        bot.sendMessage(fromId, tmpName + tmpDesc);
+    }
 });
 
 
