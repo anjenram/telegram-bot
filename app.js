@@ -2,6 +2,7 @@ var TelegramBot = require('node-telegram-bot-api');
 var token = '331299898:AAFdMVnEqW2t4b5MqU0J861HRWj061WgbIU';
 var bot = new TelegramBot(token, {polling: true});
 var request = require('request');
+var emoji = require('node-emoji').emoji;
 
 // var optionKeys = {
 //     "parse_mode": "Markdown",
@@ -104,7 +105,7 @@ bot.onText(/\/getship/, function (msg, match) {
 
     bot.sendMessage(fromId, "Greetings! Choose yourself a star ship", optionShips);
 });
-bot.onText(/\/help/, function (msg, match) {
+bot.onText(/\/starships/, function (msg, match) {
     var fromId = msg.from.id;
     console.log(msg, match)
     for (var i = 0; i < infoClass.length; i++) {
@@ -112,6 +113,18 @@ bot.onText(/\/help/, function (msg, match) {
         var tmpDesc = "Description: " + " " + infoClass[i].description;
         bot.sendMessage(fromId, tmpName + tmpDesc);
     }
+});
+bot.onText(/\/help/, function (msg, match) {
+    var fromId = msg.from.id;
+    console.log(msg, match)
+    bot.sendMessage(fromId, "FAQ:", {
+        reply_markup: JSON.stringify({
+            inline_keyboard: [
+                [{ text: '\u{1F680}', callback_data: 'starships' },{ text: '\u{1F30F}', callback_data: 'planets' }],
+                [{ text: '\u{1F464}', callback_data: 'user' },{ text: '\u{1F3B2}', callback_data: 'gameinfo' }]
+            ]
+        })
+    });
 });
 
 
